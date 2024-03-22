@@ -76,12 +76,30 @@ public class PostController {
     public Searchable customSearch(String kw) {
         Index index = client.index("movies");
 
-        SearchResult search = (SearchResult)index.search(
+        SearchResult search = (SearchResult) index.search(
                 new SearchRequest(kw)
                         .setShowMatchesPosition(true)
                         .setAttributesToHighlight(new String[]{"title"})
         );
 
         return search;
+    }
+
+    @GetMapping("/deleteIndex")
+    @ResponseBody
+    public String deleteIndex(String indexName) {
+        client.deleteIndex(indexName);
+
+        return "성공";
+    }
+
+    @GetMapping("/deleteAllDocuments")
+    @ResponseBody
+    public String deleteAllDocuments(String indexName) {
+        Index index = client.index(indexName);
+
+        index.deleteAllDocuments();
+
+        return "성공";
     }
 }
