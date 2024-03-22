@@ -2,6 +2,7 @@ package com.ll.sb20240322.global.meilisearch;
 
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.json.JacksonJsonHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class MeilisearchConfig {
     @Bean
     public Client meilisearchClient() {
-         return new Client(new Config("http://localhost:7700", "masterKey"));
+         return new Client(new Config("http://localhost:7700", "masterKey", new JacksonJsonHandler()));
     }
 }
