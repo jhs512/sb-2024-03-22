@@ -1,6 +1,7 @@
 package com.ll.sb20240322.global.initData;
 
 import com.ll.sb20240322.domain.post.post.service.PostService;
+import com.ll.sb20240322.domain.post.postDocument.service.PostDocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class NotProd {
     @Lazy
     private NotProd self;
     private final PostService postService;
+    private final PostDocumentService postDocumentService;
 
     @Bean
     public ApplicationRunner initNotProd() {
@@ -32,6 +34,8 @@ public class NotProd {
 
     @Transactional
     public void work1() {
+        postDocumentService.clear();
+
         postService.write("subject1", "body1");
         postService.write("subject2", "body2");
         postService.write("subject3", "body3");

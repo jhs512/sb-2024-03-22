@@ -1,15 +1,15 @@
 package com.ll.sb20240322.domain.post.post.event;
 
-import com.ll.sb20240322.domain.post.post.entity.Post;
+import com.ll.sb20240322.domain.post.post.dto.PostDto;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 public class AfterPostCreatedEvent extends ApplicationEvent {
     @Getter
-    private final Post post;
+    private final PostDto postDto;
 
-    public AfterPostCreatedEvent(Object source, Post post) {
+    public AfterPostCreatedEvent(Object source, PostDto postDto) {
         super(source);
-        this.post = post;
+        this.postDto = postDto;
     }
 }

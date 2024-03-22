@@ -1,5 +1,6 @@
 package com.ll.sb20240322.domain.post.post.service;
 
+import com.ll.sb20240322.domain.post.post.dto.PostDto;
 import com.ll.sb20240322.domain.post.post.entity.Post;
 import com.ll.sb20240322.domain.post.post.event.AfterPostCreatedEvent;
 import com.ll.sb20240322.domain.post.post.repository.PostRepository;
@@ -23,7 +24,7 @@ public class PostService {
                         .body(body)
                         .build());
 
-        publisher.publishEvent(new AfterPostCreatedEvent(this, post));
+        publisher.publishEvent(new AfterPostCreatedEvent(this, new PostDto(post)));
 
         return post;
     }
