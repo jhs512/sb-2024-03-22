@@ -1,6 +1,7 @@
 package com.ll.sb20240322.domain.post.postDocument.service;
 
 import com.ll.sb20240322.domain.post.postDocument.document.PostDocument;
+import com.ll.sb20240322.global.app.AppConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,34 @@ class PostDocumentServiceTest {
         assertThat(postPage.getNumberOfElements()).isEqualTo(1);
         assertThat(postPage.getTotalPages()).isEqualTo(2);
         assertThat(postPage.getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("findByKw, '주말 카페 추천' 라고 검색하면 제목이나 내용에 '주말' or '카페' or '추천' 키워드가 1개 이상 존재")
+    void t4() {
+        int page = 1;
+        Sort sort = Sort.by(Sort.Order.desc("rating"));
+        Pageable pageable = PageRequest.of(page - 1, AppConfig.getBasePageSize(), sort);
+        Page<PostDocument> postPage = postDocumentService.findByKw("주말 카페 추천", pageable);
+
+        postPage
+                .getContent()
+                .forEach(
+                        post -> assertThat(post.getSubject() + post.getBody()).containsAnyOf("주말", "카페", "추천"));
+    }
+
+    @Test
+    @DisplayName("findByKw, '\"주말\" \"카페\" \"추천\"' 라고 검색하면 제목이나 내용에 '주말', '카페', '추천' 키워드가 모두 포함")
+    void t5() {
+        int page = 1;
+        Sort sort = Sort.by(Sort.Order.desc("rating"));
+        Pageable pageable = PageRequest.of(page - 1, AppConfig.getBasePageSize(), sort);
+        Page<PostDocument> postPage = postDocumentService.findByKw("\"주말\" \"카페\" \"추천\"", pageable);
+
+        postPage
+                .getContent()
+                .forEach(
+                        post -> assertThat(post.getSubject() + post.getBody()).contains("주말", "카페", "추천"));
     }
 
     // 포스트 객체의 속성을 검증하는 헬퍼 메소드
