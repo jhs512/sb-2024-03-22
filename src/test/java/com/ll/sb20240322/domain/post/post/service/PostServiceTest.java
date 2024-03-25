@@ -33,6 +33,16 @@ class PostServiceTest {
         assertPost(posts.get(2), 1L, "subject1", "body1");
     }
 
+    @Test
+    @DisplayName("findById")
+    void t2() {
+        Post post = postService.findById(1).get();
+        assertThat(post).isNotNull();
+
+        // 순서대로 각 포스트 검증
+        assertPost(post, 1L, "subject1", "body1");
+    }
+
     // 포스트 객체의 속성을 검증하는 헬퍼 메소드
     private void assertPost(Post post, Long expectedId, String expectedSubject, String expectedBody) {
         assertThat(post.getId()).isEqualTo(expectedId);

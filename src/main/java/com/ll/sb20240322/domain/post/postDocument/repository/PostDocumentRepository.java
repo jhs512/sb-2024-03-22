@@ -6,11 +6,13 @@ import com.ll.sb20240322.global.meilisearch.MeilisearchConfig;
 import com.ll.sb20240322.standard.util.Ut;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Searchable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -62,5 +64,15 @@ public class PostDocumentRepository {
                         )
                         .toList();
 
+    }
+
+    public Optional<PostDocument> findById(long id) {
+        try {
+            PostDocument document = getIndex().getDocument(String.valueOf(id), PostDocument.class);
+            return Optional.ofNullable(document);
+        } catch (MeilisearchException ignored) {
+        }
+
+        return Optional.empty();
     }
 }
