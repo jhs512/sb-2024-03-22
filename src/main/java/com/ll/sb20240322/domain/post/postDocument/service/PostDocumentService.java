@@ -6,6 +6,8 @@ import com.ll.sb20240322.domain.post.postDocument.repository.PostDocumentReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostDocumentService {
@@ -19,5 +21,9 @@ public class PostDocumentService {
 
     public void clear() {
         postDocumentRepository.clear();
+    }
+
+    public List<PostDocument> findAll() {
+        return postDocumentRepository.findByOrderByIdDesc();
     }
 }

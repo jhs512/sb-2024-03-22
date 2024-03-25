@@ -1,12 +1,16 @@
 package com.ll.sb20240322.domain.post.postDocument.document;
 
 import com.ll.sb20240322.domain.post.post.dto.PostDto;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class PostDocument {
     @NonNull
     private long id;

@@ -5,8 +5,12 @@ import com.ll.sb20240322.global.app.AppConfig;
 import com.ll.sb20240322.global.meilisearch.MeilisearchConfig;
 import com.ll.sb20240322.standard.util.Ut;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.Results;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,5 +40,13 @@ public class PostDocumentRepository {
 
     public void clear() {
         getIndex().deleteAllDocuments();
+    }
+
+    public List<PostDocument> findByOrderByIdDesc() {
+        Results<PostDocument> documents = getIndex()
+                .getDocuments(PostDocument.class);
+
+        return Arrays.stream(documents.getResults())
+                .toList();
     }
 }
