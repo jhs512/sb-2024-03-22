@@ -2,11 +2,9 @@ package com.ll.sb20240322.domain.post.post.service;
 
 import com.ll.sb20240322.domain.post.post.dto.PostDto;
 import com.ll.sb20240322.domain.post.post.entity.Post;
-import com.ll.sb20240322.domain.post.post.event.AfterPostCreatedEvent;
-import com.ll.sb20240322.domain.post.post.event.AfterPostModifiedEvent;
 import com.ll.sb20240322.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +16,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
-    private final ApplicationEventPublisher publisher;
+    // private final ApplicationEventPublisher publisher;
+    private final KafkaTemplate<Object, Object> template;
 
     @Transactional
     public Post write(String subject, String body) {
@@ -28,7 +27,7 @@ public class PostService {
                         .body(body)
                         .build());
 
-        publisher.publishEvent(new AfterPostCreatedEvent(this, new PostDto(post)));
+        template.send("AfterPostCreatedEvent", new PostDto(post));
 
         return post;
     }
@@ -46,6 +45,7 @@ public class PostService {
     }
 
     public void modified(Post post) {
-        publisher.publishEvent(new AfterPostModifiedEvent(this, new PostDto(post)));
+        // publisher.publishEvent(new AfterPostModifiedEvent(this, new PostDto(post)));
+        template.send("AfterPostModifiedEvent", new PostDto(post));
     }
 }
