@@ -15,12 +15,12 @@ public class MeilisearchConfig {
 
     @Bean
     public Client meilisearchClient() {
-         return new Client(
-                 new Config(
-                         "http://localhost:7700",
-                         "masterKey",
-                         new JacksonJsonHandler(objectMapper)
-                 )
-         );
+        return new Client(
+                new Config(
+                        "http://localhost:7700",
+                        "masterKey",
+                        new JacksonJsonHandler(objectMapper)
+                )
+        );
     }
 }
