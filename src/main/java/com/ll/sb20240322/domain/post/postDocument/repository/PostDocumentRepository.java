@@ -49,6 +49,7 @@ public class PostDocumentRepository {
         getIndex().deleteAllDocuments();
         getIndex().resetSortableAttributesSettings();
         getIndex().updateSortableAttributesSettings(new String[]{"id"});
+        getIndex().updateFilterableAttributesSettings(new String[]{"createTimeStamp"});
     }
 
     public List<PostDocument> findByOrderByIdDesc() {
@@ -88,7 +89,18 @@ public class PostDocumentRepository {
                         .setLimit(pageable.getPageSize())
                         .setOffset((int) pageable.getOffset());
 
-        SearchResult searchResult = (SearchResult)getIndex().search(searchRequest);
+        if (startDate != null && endDate != null) {
+            searchRequest
+                    .setFilter(new String[]{
+                            "createTimeStamp >= %d AND createTimeStamp <= %d"
+                                    .formatted(
+                                    Ut.time.toTimeStamp(startDate),
+                                    Ut.time.toTimeStamp(endDate)
+                            )
+                    });
+        }
+
+        SearchResult searchResult = (SearchResult) getIndex().search(searchRequest);
 
         List<PostDocument> postDocuments = searchResult
                 .getHits()
